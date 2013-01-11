@@ -20,7 +20,7 @@
                     Results
                 </h3>
             </div>
-            <img id="map" src="https://maps.googleapis.com/maps/api/staticmap?center=Palo Alto, CA&amp;zoom=14&amp;size=400x200&amp;markers=Palo Alto, CA&amp;sensor=false" height="200" style="display: block; margin-left: auto; margin-right: auto">
+            <img id="map" src="https://maps.googleapis.com/maps/api/staticmap?scale=2&center=Palo Alto, CA&amp;zoom=14&amp;size=400x200&amp;markers=Palo Alto, CA&amp;sensor=false" height="200" style="display: block; margin-left: auto; margin-right: auto">
             <div data-role="content">
                 <ul id="list" data-role="listview" data-divider-theme="c" data-inset="false" data-count-theme="b">
                     <li data-role="list-divider" role="heading">Nearest Stores</li>
@@ -58,7 +58,7 @@
                 // Necessary for the listview to render correctly
                 $("#list").listview('refresh');
                 
-                $('body').append('<div data-role="page" id="page'+store.get('storeNumber')+'"><div data-theme="b" data-role="header" data-position="fixed"><h3>'+store.get('name')+'</h3><a data-role="button" href="#results" data-icon="arrow-l" data-iconpos="left"class="ui-btn-left">Results</a></div><img id="map" src="https://maps.googleapis.com/maps/api/staticmap?center='+coords+'+&zoom=14&size='+window.innerWidth+'x200&markers='+coords+'&sensor=false" height="200"><div data-role="content"><div><p><b>Address</b><br/>'+store.get('location').displayAddress+'</p><p><b>Opening Hours</b><br/>'+store.get('hours').join('<br/>')+'</p></div></div></div>');
+                $('body').append('<div data-role="page" id="page'+store.get('storeNumber')+'"><div data-theme="b" data-role="header" data-position="fixed"><h3>'+store.get('name')+'</h3><a data-role="button" href="#results" data-icon="arrow-l" data-iconpos="left"class="ui-btn-left">Results</a></div><img id="map" src="https://maps.googleapis.com/maps/api/staticmap?scale=2&center='+coords+'+&zoom=14&size='+window.innerWidth+'x200&markers='+coords+'&sensor=false" height="200"><div data-role="content"><div><p><b>Address</b><br/>'+store.get('location').displayAddress+'</p><p><b>Opening Hours</b><br/>'+store.get('hours').join('<br/>')+'</p></div></div></div>');
             }
 
             // Most of the magic happens here
@@ -68,7 +68,7 @@
 
                 // Prepare the Google Maps marker and update the map
                 var home = "color:orange%7C"+latlon;
-                $("#map").attr('src', "https://maps.googleapis.com/maps/api/staticmap?center="+latlon+"&zoom=10&size="+window.innerWidth+"x200&sensor=false&markers="+home);
+                $("#map").attr('src', "https://maps.googleapis.com/maps/api/staticmap?scale=2&center="+latlon+"&zoom=10&size="+window.innerWidth+"x200&sensor=false&markers="+home);
 
                 // Initialize a local “stores” object using the SDK
                 var stores = new Usergrid.Collection('stores');
