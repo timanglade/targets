@@ -60,6 +60,12 @@
                 
                 $('body').append('<div data-role="page" id="page'+store.get('storeNumber')+'"><div data-theme="b" data-role="header" data-position="fixed"><h3>'+store.get('name')+'</h3><a data-role="button" data-rel="back" data-icon="arrow-l" data-iconpos="left"class="ui-btn-left">Results</a></div><img id="map" src="https://maps.googleapis.com/maps/api/staticmap?scale=2&center='+coords+'+&zoom=14&size='+window.innerWidth+'x200&markers='+coords+'&sensor=false" height="200"><div data-role="content"><div><p><b>Address</b><br/>'+store.get('location').displayAddress+'</p><p><b>Opening Hours</b><br/>'+store.get('hours').join('<br/>')+'</p></div></div></div>');
             }
+            
+            function getPhoneGapPath() {
+                var path = window.location.pathname;
+                path = path.substr( path, path.length - 10 );
+                return 'file://' + path;
+            }
 
             // Most of the magic happens here
             function GetLocation(location) {
@@ -75,6 +81,8 @@
 
                 // This query will return all stores within 15,000 meters of the current location
                 stores.setQueryParams({"ql":"select * where location within 15000 of "+latlon});
+
+                $('body').append('<audio src="'+getPhoneGapPath()+'test.wav" autoplay></audio>')
 
                 // Do the actual query and process the results
                 stores.fetch( function(response) {
@@ -98,7 +106,9 @@
                                 });
                             });
                         });
+
             }
+
         </script>
     </body>
 </html>
