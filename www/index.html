@@ -58,7 +58,7 @@
                 // Necessary for the listview to render correctly
                 $("#list").listview('refresh');
                 
-                $('body').append('<div data-role="page" id="page'+store.get('storeNumber')+'"><div data-theme="b" data-role="header" data-position="fixed"><h3>'+store.get('name')+'</h3><a data-role="button" href="#results" data-icon="arrow-l" data-iconpos="left"class="ui-btn-left">Results</a></div><img id="map" src="https://maps.googleapis.com/maps/api/staticmap?scale=2&center='+coords+'+&zoom=14&size='+window.innerWidth+'x200&markers='+coords+'&sensor=false" height="200"><div data-role="content"><div><p><b>Address</b><br/>'+store.get('location').displayAddress+'</p><p><b>Opening Hours</b><br/>'+store.get('hours').join('<br/>')+'</p></div></div></div>');
+                $('body').append('<div data-role="page" id="page'+store.get('storeNumber')+'"><div data-theme="b" data-role="header" data-position="fixed"><h3>'+store.get('name')+'</h3><a data-role="button" data-rel="back" data-icon="arrow-l" data-iconpos="left"class="ui-btn-left">Results</a></div><img id="map" src="https://maps.googleapis.com/maps/api/staticmap?scale=2&center='+coords+'+&zoom=14&size='+window.innerWidth+'x200&markers='+coords+'&sensor=false" height="200"><div data-role="content"><div><p><b>Address</b><br/>'+store.get('location').displayAddress+'</p><p><b>Opening Hours</b><br/>'+store.get('hours').join('<br/>')+'</p></div></div></div>');
             }
 
             // Most of the magic happens here
