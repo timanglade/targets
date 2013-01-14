@@ -31,8 +31,16 @@
             //Initialize the Usergrid SDK
             Usergrid.ApiClient.init('usergrid', 'tests');
 
-            // Grab the coordinates using the HTML location API
-            navigator.geolocation.getCurrentPosition(GetLocation);
+            $(function(){
+                // Wait for the device to be ready to grab the geoloc
+                // Helps avoid the unsightly iOS authorization message
+                // http://stackoverflow.com/questions/1673579/location-permission-alert-on-iphone-with-phonegap 
+                document.addEventListener("deviceready", onDeviceReady, false);
+            })
+
+            function onDeviceReady() {
+                navigator.geolocation.getCurrentPosition(onGetLocationSuccess, onGetLocationError);     
+            }
 
             // This updates the map, listing and store page
             // for every result
@@ -62,7 +70,7 @@
             }
 
             // Most of the magic happens here
-            function GetLocation(location) {
+            function onGetLocationSuccess(location) {
                 // Extract the coordinates in a usable form
                 var latlon = location.coords.latitude+","+location.coords.longitude;
 
@@ -99,6 +107,11 @@
                             });
                         });
             }
+
+            function onGetLocationError() {
+                alert("could not get your location");
+            }
+
         </script>
     </body>
 </html>
