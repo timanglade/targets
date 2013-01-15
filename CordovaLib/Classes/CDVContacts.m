@@ -75,7 +75,7 @@
     NSString* callbackId = command.callbackId;
 
     CDVAddressBookHelper* abHelper = [[CDVAddressBookHelper alloc] init];
-    CDVContacts* __unsafe_unretained weakSelf = self;  // play it safe to avoid retain cycles
+    CDVContacts* __weak weakSelf = self;  // play it safe to avoid retain cycles
 
     [abHelper createAddressBook: ^(ABAddressBookRef addrBook, CDVAddressBookAccessError * errCode) {
             if (addrBook == NULL) {
@@ -128,7 +128,7 @@
     bool bEdit = [options isKindOfClass:[NSNull class]] ? false : [options existsValue:@"true" forKey:@"allowsEditing"];
 
     CDVAddressBookHelper* abHelper = [[CDVAddressBookHelper alloc] init];
-    CDVContacts* __unsafe_unretained weakSelf = self;  // play it safe to avoid retain cycles
+    CDVContacts* __weak weakSelf = self;  // play it safe to avoid retain cycles
 
     [abHelper createAddressBook: ^(ABAddressBookRef addrBook, CDVAddressBookAccessError * errCode) {
             if (addrBook == NULL) {
@@ -250,10 +250,9 @@
         // if we got this far, user has already approved/ disapproved addressBook access
         ABAddressBookRef addrBook = nil;
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 60000
-        if (&ABAddressBookCreateWithOptions != NULL) {
-            addrBook = ABAddressBookCreateWithOptions(NULL, NULL);
-        }
-        else
+            if (&ABAddressBookCreateWithOptions != NULL) {
+                addrBook = ABAddressBookCreateWithOptions(NULL, NULL);
+            } else
 #endif
         {
             // iOS 4 & 5
@@ -289,8 +288,8 @@
             // which is why address book is created within the dispatch queue.
             // more details here: http: //blog.byadrian.net/2012/05/05/ios-addressbook-framework-and-gcd/
             CDVAddressBookHelper* abHelper = [[CDVAddressBookHelper alloc] init];
-            CDVContacts* __unsafe_unretained weakSelf = self; // play it safe to avoid retain cycles
-                                                              // it gets uglier, block within block.....
+            CDVContacts* __weak weakSelf = self; // play it safe to avoid retain cycles
+            // it gets uglier, block within block.....
             [abHelper createAddressBook: ^(ABAddressBookRef addrBook, CDVAddressBookAccessError * errCode) {
                     if (addrBook == NULL) {
                         // permission was denied or other error - return error
@@ -385,7 +384,7 @@
 
     [self.commandDelegate runInBackground:^{
             CDVAddressBookHelper* abHelper = [[CDVAddressBookHelper alloc] init];
-            CDVContacts* __unsafe_unretained weakSelf = self; // play it safe to avoid retain cycles
+            CDVContacts* __weak weakSelf = self; // play it safe to avoid retain cycles
 
             [abHelper createAddressBook: ^(ABAddressBookRef addrBook, CDVAddressBookAccessError * errorCode) {
                     CDVPluginResult* result = nil;
@@ -456,7 +455,7 @@
     NSNumber* cId = [command.arguments objectAtIndex:0];
 
     CDVAddressBookHelper* abHelper = [[CDVAddressBookHelper alloc] init];
-    CDVContacts* __unsafe_unretained weakSelf = self;  // play it safe to avoid retain cycles
+    CDVContacts* __weak weakSelf = self;  // play it safe to avoid retain cycles
 
     [abHelper createAddressBook: ^(ABAddressBookRef addrBook, CDVAddressBookAccessError * errorCode) {
             CDVPluginResult* result = nil;
@@ -564,12 +563,12 @@
     ABAddressBookRef addressBook;
 
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 60000
-    if (&ABAddressBookCreateWithOptions != NULL) {
-        CFErrorRef error = nil;
-        // CFIndex status = ABAddressBookGetAuthorizationStatus();
-        addressBook = ABAddressBookCreateWithOptions(NULL, &error);
-        // NSLog(@"addressBook access: %lu", status);
-        ABAddressBookRequestAccessWithCompletion(addressBook, ^(bool granted, CFErrorRef error) {
+        if (&ABAddressBookCreateWithOptions != NULL) {
+            CFErrorRef error = nil;
+            // CFIndex status = ABAddressBookGetAuthorizationStatus();
+            addressBook = ABAddressBookCreateWithOptions(NULL, &error);
+            // NSLog(@"addressBook access: %lu", status);
+            ABAddressBookRequestAccessWithCompletion(addressBook, ^(bool granted, CFErrorRef error) {
                 // callback can occur in background, address book must be accessed on thread it was created on
                 dispatch_sync (dispatch_get_main_queue (), ^{
                         if (error) {
@@ -582,8 +581,7 @@
                         }
                     });
             });
-    }
-    else
+        } else
 #endif
     {
         // iOS 4 or 5 no checks needed

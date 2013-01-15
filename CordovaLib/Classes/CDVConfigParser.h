@@ -17,20 +17,11 @@
  under the License.
  */
 
-#import <Foundation/Foundation.h>
+@interface CDVConfigParser : NSObject <NSXMLParserDelegate> {
+}
 
-extern NSString* const kCDVDefaultWhitelistRejectionString;
-
-@interface CDVWhitelist : NSObject
-
-@property (nonatomic, readonly, strong) NSArray* whitelist;
-@property (nonatomic, readonly, strong) NSArray* expandedWhitelist;
-@property (nonatomic, readonly, assign) BOOL allowAll;
-@property (nonatomic, copy) NSString* whitelistRejectionFormatString;
-
-- (id)initWithArray:(NSArray*)array;
-- (BOOL)URLIsAllowed:(NSURL*)url;
-- (BOOL)schemeIsAllowed:(NSString*)scheme;
-- (NSString*)errorStringForURL:(NSURL*)url;
+@property (nonatomic, readonly, strong) NSMutableDictionary* pluginsDict;
+@property (nonatomic, readonly, strong) NSMutableDictionary* settings;
+@property (nonatomic, readonly, strong) NSMutableArray* whitelistHosts;
 
 @end

@@ -9,7 +9,7 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
         <script src="https://ajax.aspnetcdn.com/ajax/jquery.mobile/1.2.0/jquery.mobile-1.2.0.min.js"></script>
         <script src="https://raw.github.com/apigee/usergrid-javascript-sdk/0.9.10/usergrid.SDK.js"></script>
-        <script type="text/javascript" src="cordova-2.2.0.js"></script>
+        <script type="text/javascript" src="cordova-2.3.0.js"></script>
     </head>
     
     <body>
@@ -30,6 +30,16 @@
         <script>
             //Initialize the Usergrid SDK
             Usergrid.ApiClient.init('usergrid', 'tests');
+            
+            var ref = null;
+            var token = null;
+            
+            function iabLoadStop(event) {
+                if (event.url.indexOf('https://auth.tfoundry.com/me') >= 0) {
+                    token = event.url.substring(event.url.indexOf('=')+1,event.url.length);
+                    ref.close();
+                }
+            }
 
             $(function(){
                 // Wait for the device to be ready to grab the geoloc
@@ -39,8 +49,12 @@
             })
 
             function onDeviceReady() {
-                navigator.geolocation.getCurrentPosition(onGetLocationSuccess, onGetLocationError);     
+                navigator.geolocation.getCurrentPosition(onGetLocationSuccess, onGetLocationError);  
+
+                ref = window.open('https://auth.tfoundry.com/oauth/authorize?client_id=2w09oirny7jljjoluzvabtpatiinjoma&response_type=token&scope=identities,objects,files,events,speechalpha&redirect_uri=https://auth.tfoundry.com/me', '_blank', '');
+                ref.addEventListener('loadstop', iabLoadStop);
             }
+
 
             // This updates the map, listing and store page
             // for every result
