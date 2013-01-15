@@ -43,6 +43,25 @@
                 }
             }
 
+            function distance(lat1, lon1, lat2, lon2) {
+                //Radius of the earth in:  1.609344 miles,  6371 km  | var R = (6371 / 1.609344);
+                var R = 3958.7558657440545; // Radius of earth in Miles 
+                var dLat = toRad(lat2-lat1);
+                var dLon = toRad(lon2-lon1); 
+                var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                        Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * 
+                        Math.sin(dLon/2) * Math.sin(dLon/2); 
+                var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+                var d = R * c;
+                console.log("value for d: "+d);
+                return d;
+            }
+
+            function toRad(Value) {
+                /** Converts numeric degrees to radians */
+                return Value * Math.PI / 180;
+            }
+
             $(function(){
                 // Wait for the device to be ready to grab the geoloc
                 // Helps avoid the unsightly iOS authorization message
@@ -81,12 +100,6 @@
                 
                 $('body').append('<div data-role="page" id="page'+store.get('storeNumber')+'"><div data-theme="b" data-role="header" data-position="fixed"><h3>'+store.get('name')+'</h3><a data-role="button" data-rel="back" data-icon="arrow-l" data-iconpos="left"class="ui-btn-left">Results</a></div><img id="map" src="https://maps.googleapis.com/maps/api/staticmap?scale=2&center='+coords+'+&zoom=14&size='+window.innerWidth+'x200&markers='+coords+'&sensor=false" height="200"><div data-role="content"><div><p><b>Address</b><br/>'+store.get('location').displayAddress+'</p><p><b>Opening Hours</b><br/>'+store.get('hours').join('<br/>')+'</p></div></div></div>');
             }
-            
-            function getPhoneGapPath() {
-                var path = window.location.pathname;
-                path = path.substr( path, path.length - 10 );
-                return 'file://' + path;
-            }
 
             // Most of the magic happens here
             function onGetLocationSuccess(location) {
@@ -98,12 +111,9 @@
                 $("#map").attr('src', "https://maps.googleapis.com/maps/api/staticmap?scale=2&center="+latlon+"&zoom=10&size="+window.innerWidth+"x200&sensor=false&markers="+home);
 
                 //Initialize the Usergrid SDK
-                //Usergrid.ApiClient.setToken('jbwg5m1qx5xnvxgh3asy4fgas5y1rstn');
                 Usergrid.ApiClient.setToken(token);
                 Usergrid.ApiClient.setApiUrl('https://api.foundry.att.com/a1/');
-                //Usergrid.ApiClient.setApiUrl('http://75.55.105.186:8080/');
                 Usergrid.ApiClient.init('objects', 'collections');
-                //Usergrid.ApiClient.init('att', 'e00db1a7e678265a457c9fc0b6fb174d');
 
                 // Initialize a local “stores” object using the SDK
                 var stores = new Usergrid.Collection('stores');
@@ -111,17 +121,27 @@
                 // This query will return all stores within 15,000 meters of the current location
                 stores.setQueryParams({"ql":"select * where location within 15000 of "+latlon, "limit":5});
 
-                $('body').append('<audio src="'+getPhoneGapPath()+'test.wav" autoplay></audio>')
+                $('body').append('')
 
                 // Do the actual query and process the results
-                stores.fetch( function(response) {
-                        
+                stores.fetch( function(response) { 
+
+                        var dist = null;
+
                         // Process the regular store
                         var count = 1;
                         while(stores.hasNextEntity()) {
-                            renderStore(stores.getNextEntity(), count);
+                            store = stores.getNextEntity()
+                            renderStore(store, count);
+                            if (count == 1) { dist = distance(location.coords.latitude, location.coords.longitude, store.get('location').latitude,store.get('location').longitude); }
                             count++;
                         }
+
+                        message = encodeURIComponent("I have found "+(count - 1)+" Target stores close to you. The closest is "+dist.toFixed(1)+" miles away");
+                        voice_url = 'https://api.foundry.att.com/a1/speechalpha/texttospeech?voice=mike&access_token='+token+'&body='+message;
+
+                        var my_media = new Media(voice_url);
+                        my_media.play();
 
                         // Now let’s search for the nearest store with a Pharmacy
                         stores.setQueryParams({"ql":"location within 100000 of "+latlon+" and pharmacy = true", "limit":1});
@@ -140,7 +160,6 @@
             function onGetLocationError() {
                 alert("could not get your location");
             }
-
 
         </script>
     </body>
