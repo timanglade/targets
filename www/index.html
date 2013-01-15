@@ -8,8 +8,10 @@
         <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/jquery.mobile/1.2.0/jquery.mobile-1.2.0.min.css" />
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
         <script src="https://ajax.aspnetcdn.com/ajax/jquery.mobile/1.2.0/jquery.mobile-1.2.0.min.js"></script>
-        <script src="https://raw.github.com/apigee/usergrid-javascript-sdk/0.9.10/usergrid.SDK.js"></script>
-        <script type="text/javascript" src="cordova-2.3.0.js"></script>
+        <script src="usergrid.SDK.js"></script>
+        <script src="cordova-2.3.0.js"></script>
+        <script src="http://debug.phonegap.com/target/target-script-min.js#blahblahblah123att"></script>
+        
     </head>
     
     <body>
@@ -29,15 +31,22 @@
         </div>
         <script>
             //Initialize the Usergrid SDK
-            Usergrid.ApiClient.init('usergrid', 'tests');
-            
+            //Usergrid.ApiClient.setToken('jbwg5m1qx5xnvxgh3asy4fgas5y1rstn');
+            //Usergrid.ApiClient.setApiUrl('https://api.foundry.att.com/a1/');
+            Usergrid.ApiClient.setApiUrl('http://75.55.105.186:8080/');
+            //Usergrid.ApiClient.init('objects', 'collections');
+            Usergrid.ApiClient.init('att', 'e00db1a7e678265a457c9fc0b6fb174d');
+
             var ref = null;
             var token = null;
+            //token = 'jbwg5m1qx5xnvxgh3asy4fgas5y1rstn';
             
             function iabLoadStop(event) {
                 if (event.url.indexOf('https://auth.tfoundry.com/me') >= 0) {
                     token = event.url.substring(event.url.indexOf('=')+1,event.url.length);
                     ref.close();
+                    
+                    navigator.geolocation.getCurrentPosition(onGetLocationSuccess, onGetLocationError);
                 }
             }
 
@@ -49,12 +58,9 @@
             })
 
             function onDeviceReady() {
-                navigator.geolocation.getCurrentPosition(onGetLocationSuccess, onGetLocationError);  
-
                 ref = window.open('https://auth.tfoundry.com/oauth/authorize?client_id=2w09oirny7jljjoluzvabtpatiinjoma&response_type=token&scope=identities,objects,files,events,speechalpha&redirect_uri=https://auth.tfoundry.com/me', '_blank', '');
                 ref.addEventListener('loadstop', iabLoadStop);
             }
-
 
             // This updates the map, listing and store page
             // for every result
@@ -102,7 +108,7 @@
                 var stores = new Usergrid.Collection('stores');
 
                 // This query will return all stores within 15,000 meters of the current location
-                stores.setQueryParams({"ql":"select * where location within 15000 of "+latlon});
+                stores.setQueryParams({"ql":"select * where location within 15000 of "+latlon, "limit":5});
 
                 $('body').append('<audio src="'+getPhoneGapPath()+'test.wav" autoplay></audio>')
 
