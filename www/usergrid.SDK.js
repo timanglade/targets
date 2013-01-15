@@ -1076,7 +1076,7 @@ Usergrid.ApiClient = (function () {
         } else {
           path = '?access_token='+Usergrid.ApiClient.getToken();
         }
-        //xhr.withCredentials = true;
+        xhr.withCredentials = true;
       }
       xhr.open(method, path, true);
       //add content type = json if there is a json payload

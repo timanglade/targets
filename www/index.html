@@ -10,7 +10,6 @@
         <script src="https://ajax.aspnetcdn.com/ajax/jquery.mobile/1.2.0/jquery.mobile-1.2.0.min.js"></script>
         <script src="usergrid.SDK.js"></script>
         <script src="cordova-2.3.0.js"></script>
-        <script src="http://debug.phonegap.com/target/target-script-min.js#blahblahblah123att"></script>
         
     </head>
     
@@ -30,22 +29,16 @@
             </div>
         </div>
         <script>
-            //Initialize the Usergrid SDK
-            //Usergrid.ApiClient.setToken('jbwg5m1qx5xnvxgh3asy4fgas5y1rstn');
-            //Usergrid.ApiClient.setApiUrl('https://api.foundry.att.com/a1/');
-            Usergrid.ApiClient.setApiUrl('http://75.55.105.186:8080/');
-            //Usergrid.ApiClient.init('objects', 'collections');
-            Usergrid.ApiClient.init('att', 'e00db1a7e678265a457c9fc0b6fb174d');
 
             var ref = null;
             var token = null;
-            //token = 'jbwg5m1qx5xnvxgh3asy4fgas5y1rstn';
             
             function iabLoadStop(event) {
                 if (event.url.indexOf('https://auth.tfoundry.com/me') >= 0) {
+                    //alert(event.url);
                     token = event.url.substring(event.url.indexOf('=')+1,event.url.length);
                     ref.close();
-                    
+
                     navigator.geolocation.getCurrentPosition(onGetLocationSuccess, onGetLocationError);
                 }
             }
@@ -103,6 +96,14 @@
                 // Prepare the Google Maps marker and update the map
                 var home = "color:orange%7C"+latlon;
                 $("#map").attr('src', "https://maps.googleapis.com/maps/api/staticmap?scale=2&center="+latlon+"&zoom=10&size="+window.innerWidth+"x200&sensor=false&markers="+home);
+
+                //Initialize the Usergrid SDK
+                //Usergrid.ApiClient.setToken('jbwg5m1qx5xnvxgh3asy4fgas5y1rstn');
+                Usergrid.ApiClient.setToken(token);
+                Usergrid.ApiClient.setApiUrl('https://api.foundry.att.com/a1/');
+                //Usergrid.ApiClient.setApiUrl('http://75.55.105.186:8080/');
+                Usergrid.ApiClient.init('objects', 'collections');
+                //Usergrid.ApiClient.init('att', 'e00db1a7e678265a457c9fc0b6fb174d');
 
                 // Initialize a local “stores” object using the SDK
                 var stores = new Usergrid.Collection('stores');
