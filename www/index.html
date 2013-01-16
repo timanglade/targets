@@ -137,7 +137,7 @@
                             count++;
                         }
 
-                        message = encodeURIComponent("I have found "+(count - 1)+" Target stores close to you. The closest is "+dist.toFixed(1)+" miles away");
+                        message = encodeURIComponent("I have found "+(count - 1)+" Target stores close to you. The closest is "+dist.toFixed(1)+" miles away, and is open, right now.");
                         voice_url = 'https://api.foundry.att.com/a1/speechalpha/texttospeech?voice=mike&access_token='+token+'&body='+message;
 
                         var my_media = new Media(voice_url);
