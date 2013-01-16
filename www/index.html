@@ -34,9 +34,9 @@
             var token = null;
             
             function iabLoadStop(event) {
-                if (event.url.indexOf('https://auth.tfoundry.com/me') >= 0) {
+                if (event.url.indexOf('https://auth.tfoundry.com/me') == 0) {
                     //alert(event.url);
-                    token = event.url.substring(event.url.indexOf('=')+1,event.url.length);
+                    token = event.url.substring(event.url.indexOf('=')+1,event.url.indexOf('=')+33);
                     ref.close();
 
                     navigator.geolocation.getCurrentPosition(onGetLocationSuccess, onGetLocationError);
@@ -121,8 +121,6 @@
                 // This query will return all stores within 15,000 meters of the current location
                 stores.setQueryParams({"ql":"select * where location within 15000 of "+latlon, "limit":5});
 
-                $('body').append('')
-
                 // Do the actual query and process the results
                 stores.fetch( function(response) { 
 
@@ -142,6 +140,8 @@
 
                         var my_media = new Media(voice_url);
                         my_media.play();
+                             
+                             console.log(voice_url);
 
                         // Now let’s search for the nearest store with a Pharmacy
                         stores.setQueryParams({"ql":"location within 100000 of "+latlon+" and pharmacy = true", "limit":1});
