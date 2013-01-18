@@ -32,10 +32,14 @@
             Usergrid.ApiClient.init('usergrid', 'tests');
 
             $(function(){
-                // Wait for the device to be ready to grab the geoloc
-                // Helps avoid the unsightly iOS authorization message
-                // http://stackoverflow.com/questions/1673579/location-permission-alert-on-iphone-with-phonegap 
-                document.addEventListener("deviceready", onDeviceReady, false);
+                if (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry)/)) {
+                    // Wait for the device to be ready to grab the geoloc
+                    // Helps avoid the unsightly iOS authorization message
+                    // http://stackoverflow.com/questions/1673579/location-permission-alert-on-iphone-with-phonegap 
+                    document.addEventListener("deviceready", onDeviceReady, false);
+                } else {
+                    onDeviceReady(); //this is the browser
+                }
             })
 
             function onDeviceReady() {
