@@ -17,3 +17,10 @@ build/*
 *.pbxuser
 *.xcworkspace
 xcuserdata
+
+# Build files
+CordovaLib/CordovaLib.xcodeproj/xcuserdata/tim.xcuserdatad/xcschemes/CordovaLib.xcscheme
+CordovaLib/CordovaLib.xcodeproj/xcuserdata/tim.xcuserdatad/xcschemes/xcschememanagement.plist
+Targets.xcodeproj/project.xcworkspace/xcuserdata/tim.xcuserdatad/UserInterfaceState.xcuserstate
+Targets.xcodeproj/xcuserdata/tim.xcuserdatad/xcschemes/Targets.xcscheme
+Targets.xcodeproj/xcuserdata/tim.xcuserdatad/xcschemes/xcschememanagement.plist
