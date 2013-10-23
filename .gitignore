@@ -1,27 +1,50 @@
-# Exclude the build directory
-build/*
-  
-# Exclude temp nibs and swap files
-*~.nib
-*.swp
-  
-# Exclude OS X folder attributes
-.DS_Store
-  
-# Exclude user-specific XCode 3 and 4 files
-*.mode1
-*.mode1v3
-*.mode2v3
-*.perspective
-*.perspectivev3
-*.pbxuser
-*.xcworkspace
-xcuserdata
+# ANDROID / ECLIPSE
 
-# Build files
-CordovaLib/CordovaLib.xcodeproj/xcuserdata/tim.xcuserdatad/xcschemes/CordovaLib.xcscheme
-CordovaLib/CordovaLib.xcodeproj/xcuserdata/tim.xcuserdatad/xcschemes/xcschememanagement.plist
-Targets.xcodeproj/project.xcworkspace/xcuserdata/tim.xcuserdatad/UserInterfaceState.xcuserstate
-Targets.xcodeproj/xcuserdata/tim.xcuserdatad/xcschemes/Targets.xcscheme
-Targets.xcodeproj/xcuserdata/tim.xcuserdatad/xcschemes/xcschememanagement.plist
-Targets.xcodeproj/project.xcworkspace/xcuserdata/apigee.xcuserdatad/UserInterfaceState.xcuserstate
+# built application files
+*.apk
+*.ap_
+
+# files for the dex VM
+*.dex
+
+# Java class files
+*.class
+
+# generated files - android project subfolder
+Android/bin/
+Android/gen/
+Android/assets/
+
+# generated files
+bin/
+gen/
+
+# Local configuration file (sdk path, etc)
+local.properties
+
+# IOS / Xcode
+build/*
+*.pbxuser
+!default.pbxuser
+*.mode1v3
+!default.mode1v3
+*.mode2v3
+!default.mode2v3
+*.perspectivev3
+!default.perspectivev3
+*.xcworkspace
+!default.xcworkspace
+xcuserdata
+profile
+*.moved-aside
+IOS/www/
+
+# OSX
+.DS_Store
+
+# Thumbnails
+._*
+
+# Files that might appear on external disk
+.Spotlight-V100
+.Trashes

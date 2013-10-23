@@ -45,6 +45,7 @@
             })
 
             function onDeviceReady() {
+                console.log('acquiring position');
                 navigator.geolocation.getCurrentPosition(onGetLocationSuccess, onGetLocationError);     
             }
 
